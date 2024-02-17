@@ -20,6 +20,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("SERVER IS RUNNING");
+});
+
 app.get("/login", (req, res) => {
   const authorizeUrl = `https://www.tiktok.com/v2/auth/authorize?scope=${tiktokConfig.scopes}&client_key=${tiktokConfig.clientKey}&redirect_uri=${tiktokConfig.redirectUri}&response_type=code`;
 
