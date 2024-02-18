@@ -2,16 +2,16 @@ import express from "express";
 import fetch from "node-fetch";
 import queryString from "querystring";
 import cors from "cors";
-// const axios = require("axios");
 import axios from "axios";
 const app = express();
 const port = 4000;
-
+import dotenv from "dotenv";
+dotenv.config();
 const tiktokConfig = {
-  clientKey: "awp1l97zfgf2xei0",
-  clientSecret: "39sEnJ5YOngngNZhl8rL1J9hUAzppLiY",
-  redirectUri: "https://www.make.com/oauth/cb/app",
-  scopes: "user.info.basic,video.upload,video.publish",
+  clientKey: process.env.CLIENT_KEY,
+  clientSecret: process.env.CLIENT_SECRET,
+  redirectUri: process.env.REDIRECT_URI,
+  scopes: process.env.SCOPES,
 };
 
 app.use(
@@ -38,7 +38,7 @@ app.get("/oauth/redirect", async (req, res) => {
     const params = {
       code: decode,
       client_key: tiktokConfig.clientKey,
-      grant_type: "authorization_code",
+      grant_type: process.env.GRANT_TYPE,
       redirect_uri: tiktokConfig.redirectUri,
       client_secret: tiktokConfig.clientSecret,
     };
