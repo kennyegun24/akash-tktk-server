@@ -7,6 +7,7 @@ const app = express();
 const port = 4000;
 import dotenv from "dotenv";
 dotenv.config();
+
 const tiktokConfig = {
   clientKey: process.env.CLIENT_KEY,
   clientSecret: process.env.CLIENT_SECRET,
@@ -16,7 +17,7 @@ const tiktokConfig = {
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://akash-tktk-server.vercel.app/",
   })
 );
 
@@ -53,7 +54,7 @@ app.get("/oauth/redirect", async (req, res) => {
       }
     );
     const access_token = await response.data?.access_token;
-    console.log("response>>>>>>>", access_token);
+    // console.log("response>>>>>>>", access_token);
     const queryUserInfo = await axios.get(
       "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
       {
@@ -66,11 +67,9 @@ app.get("/oauth/redirect", async (req, res) => {
     const getUserInfo = await queryUserInfo.data;
     res.send({ access_token, getUserInfo });
   } catch (error) {
-    console.error("Error during callback:", error.message);
+    // console.error("Error during callback:", error.message);
     res.status(500).send("An error occurred during the login process.");
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+app.listen(port, () => {});
