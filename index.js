@@ -58,17 +58,21 @@ app.post("/oauth/redirect", async (req, res) => {
     const access_token = await response.data?.access_token;
 
     if (access_token) {
-      const queryUserInfo = await axios.get(
-        "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-      const getUserInfo = await queryUserInfo.data;
-      res.send({ access_token, getUserInfo });
+      try {
+        const queryUserInfo = await axios.get(
+          "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+          }
+        );
+        const getUserInfo = await queryUserInfo.data;
+        res.send({ access_token, getUserInfo });
+      } catch (error) {
+        res.status(422).send("Could not get user information");
+      }
     }
 
     if (response.data?.error) {
