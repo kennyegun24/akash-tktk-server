@@ -56,14 +56,13 @@ app.post("/oauth/redirect", async (req, res) => {
       }
     );
     const access_token = await response.data?.access_token;
-    // console.log(response.data.error);
-    // console.log("response>>>>>>>", access_token);
+
     if (access_token) {
       const queryUserInfo = await axios.get(
         "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
         {
           headers: {
-            Authorization: `Bearer ${response.data.access_token}`,
+            Authorization: `Bearer ${access_token}`,
             "Content-Type": "application/json; charset=UTF-8",
           },
         }
@@ -72,7 +71,7 @@ app.post("/oauth/redirect", async (req, res) => {
       res.send({ access_token, getUserInfo });
     }
 
-    if (response.data.error) {
+    if (response.data?.error) {
       res.status(401).send("An error occurred during the login process.");
     }
   } catch (error) {
