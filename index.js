@@ -56,9 +56,9 @@ app.post("/oauth/redirect", async (req, res) => {
       }
     );
     const access_token = await response.data?.access_token;
-    console.log(response.data.error);
+    // console.log(response.data.error);
     // console.log("response>>>>>>>", access_token);
-    if (!response.data?.error) {
+    if (access_token) {
       const queryUserInfo = await axios.get(
         "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
         {
