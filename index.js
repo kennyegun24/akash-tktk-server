@@ -31,7 +31,7 @@ app.get("/login", (req, res) => {
   res.json({ url: authorizeUrl });
 });
 
-app.get("/oauth/redirect", async (req, res) => {
+app.post("/oauth/redirect", async (req, res) => {
   try {
     const { code } = req.body;
     const decode = decodeURI(code);
