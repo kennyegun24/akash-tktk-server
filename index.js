@@ -17,7 +17,7 @@ const tiktokConfig = {
 
 app.use(
   cors({
-    origin: "https://akash-tktk-server.vercel.app/",
+    origin: "https://akash-tktk.vercel.app/login",
   })
 );
 
