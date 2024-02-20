@@ -62,10 +62,11 @@ app.post("/oauth/redirect", async (req, res) => {
       try {
         const queryUserInfo = await axios.post(
           "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
+          null,
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
-              "Content-Type": "application/json",
+              "Content-Type": "applicatimodon/json; charset=UTF-8",
             },
           }
         );
