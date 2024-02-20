@@ -58,13 +58,14 @@ app.post("/oauth/redirect", async (req, res) => {
     const access_token = await response.data?.access_token;
 
     if (access_token) {
+      res.status(200).send(access_token);
       try {
         const queryUserInfo = await axios.get(
           "https://open.tiktokapis.com/v2/post/publish/creator_info/query/",
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
-              "Content-Type": "application/json; charset=UTF-8",
+              "Content-Type": "application/json",
             },
           }
         );
