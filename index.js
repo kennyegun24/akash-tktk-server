@@ -19,7 +19,7 @@ const tiktokConfig = {
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "https://akash-tktk.vercel.app/",
   })
 );
 
@@ -94,7 +94,7 @@ app.post("/upload/video", async (req, res) => {
   try {
     const initializeUploadToTiktokApi = async () => {
       const axiosCreate = axios.create({
-        baseURL: "https://open.tiktokapis.com/v2/",
+        baseURL: "https://open.tiktokapis.com/v2",
         headers: {
           Authorization: `Bearer ${access_token}`,
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ app.post("/upload/video", async (req, res) => {
 
         if (response) {
           const axiosCreate = axios.create({
-            baseURL: response.data.upload_url,
+            baseURL: response?.data?.upload_url,
             headers: {
               Authorization: `Bearer ${access_token}`,
               "Content-Type": "video/mp4",
