@@ -86,7 +86,7 @@ app.post("/oauth/redirect", async (req, res) => {
   }
 });
 
-app.post("upload/video", async (req, res) => {
+app.post("/upload/video", async (req, res) => {
   const bufferData = req.body.bufferData;
   const userVideoDetails = req.body.userVideoDetails;
   const access_token = req.body.access_token;
