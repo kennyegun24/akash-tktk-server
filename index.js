@@ -107,6 +107,7 @@ app.post("/upload/video", async (req, res) => {
         });
 
         const response = await req.data;
+        console.log(response);
 
         if (response) {
           const axiosCreate = axios.create({
@@ -120,11 +121,16 @@ app.post("/upload/video", async (req, res) => {
           const req = await axiosCreate.post("", {
             bufferData,
           });
+          console.log(req);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     await initializeUploadToTiktokApi();
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.listen(port, () => {});
