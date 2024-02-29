@@ -91,6 +91,7 @@ app.post("/upload/video", async (req, res) => {
   const userVideoDetails = req.body.userVideoDetails;
   const access_token = req.body.access_token;
   const fileSize = req.body.fileSize;
+  console.log(req.body);
   try {
     const initializeUploadToTiktokApi = async () => {
       const axiosCreate = axios.create({
