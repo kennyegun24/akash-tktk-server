@@ -86,4 +86,45 @@ app.post("/oauth/redirect", async (req, res) => {
   }
 });
 
+app.post("upload/video", async (req, res) => {
+  const bufferData = req.body.bufferData;
+  const userVideoDetails = req.body.userVideoDetails;
+  const access_token = req.body.access_token;
+  const fileSize = req.body.fileSize;
+  try {
+    const initializeUploadToTiktokApi = async () => {
+      const axiosCreate = axios.create({
+        baseURL: "https://open.tiktokapis.com/v2/",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      try {
+        const req = await axiosCreate.post("/post/publish/video/init/", {
+          ...userVideoDetails,
+        });
+
+        const response = await req.data;
+
+        if (response) {
+          const axiosCreate = axios.create({
+            baseURL: response.data.upload_url,
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+              "Content-Type": "video/mp4",
+              "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
+            },
+          });
+          const req = await axiosCreate.post("", {
+            bufferData,
+          });
+        }
+      } catch (error) {}
+    };
+    await initializeUploadToTiktokApi();
+  } catch (error) {}
+});
+
 app.listen(port, () => {});
