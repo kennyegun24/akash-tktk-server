@@ -93,65 +93,63 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
   const fileSize = JSON.parse(req.body.fileSize);
   const videoBuffer = req.file ? req.file.buffer : null;
   // console.log(req.file?.buffer);
-  console.log(userVideoDetails.title, "uservideodetails");
-  console.log(access_token, "access_token");
-  console.log(fileSize, "filesize");
-  // try {
-  //   const initializeUploadToTiktokApi = async () => {
-  //     try {
-  //       const req = await axios.post(
-  //         "https://open.tiktokapis.com/v2/post/publish/video/init/",
-  //         {
-  //           post_info: { ...userVideoDetails },
-  //           source_info: {
-  //             source: "FILE_UPLOAD",
-  //             video_size: fileSize.size,
-  //             chunk_size: fileSize.size,
-  //             total_chunk_count: 1,
-  //           },
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${access_token}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       const response = await req.data;
-  //       // console.log(response);
+  // console.log(userVideoDetails.title, "uservideodetails");
+  // console.log(access_token, "access_token");
+  // console.log(fileSize, "filesize");
+  try {
+    const initializeUploadToTiktokApi = async () => {
+      try {
+        const req = await axios.post(
+          "https://open.tiktokapis.com/v2/post/publish/video/init/",
+          {
+            post_info: { ...userVideoDetails },
+            source_info: {
+              source: "FILE_UPLOAD",
+              video_size: fileSize.size,
+              chunk_size: fileSize.size,
+              total_chunk_count: 1,
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const response = await req.data;
+        // console.log(response);
 
-  //       if (response) {
-  //         if (videoBuffer) {
-  //           try {
-  //             const req = axios.post(
-  //               `${response?.data?.upload_url}`,
-  //               videoBuffer,
-  //               {
-  //                 headers: {
-  //                   Authorization: `Bearer ${access_token}`,
-  //                   "Content-Type": "video/mp4",
-  //                   "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
-  //                 },
-  //               }
-  //             );
-  //             // console.log(req);
-  //           } catch (error) {
-  //             res.status(422).send(error, "video upload");
-  //           }
-  //         } else {
-  //           res.status(422).send("Video buffer not present");
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log(error?.data?.error, "error 422");
-  //       res.status(422).send(error);
-  //     }
-  //   };
-  //   await initializeUploadToTiktokApi();
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(422).send("Something went wrong");
-  // }
+        if (response) {
+          if (videoBuffer) {
+            try {
+              axios.post(`${response?.data?.upload_url}`, videoBuffer, {
+                headers: {
+                  Authorization: `Bearer ${access_token}`,
+                  "Content-Type": "video/mp4",
+                  "Content-Range": `bytes 0-${fileSize.size - 1}/${
+                    fileSize.size
+                  }`,
+                },
+              });
+              // console.log(req);
+            } catch (error) {
+              res.status(422).send(error, "video upload");
+            }
+          } else {
+            res.status(422).send("Video buffer not present");
+          }
+        }
+      } catch (error) {
+        console.log(error?.data?.error, "error 422");
+        res.status(422).send(error);
+      }
+    };
+    await initializeUploadToTiktokApi();
+  } catch (error) {
+    console.log(error);
+    res.status(422).send("Something went wrong");
+  }
 });
 
 app.listen(port, () => {});
