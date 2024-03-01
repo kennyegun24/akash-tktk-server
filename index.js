@@ -99,7 +99,6 @@ app.post("/upload/video", async (req, res) => {
           "https://open.tiktokapis.com/v2/post/publish/video/init/",
           { ...userVideoDetails },
           {
-            baseURL: "",
             headers: {
               Authorization: `Bearer ${access_token}`,
               "Content-Type": "application/json",
