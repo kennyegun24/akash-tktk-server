@@ -118,14 +118,22 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
         console.log(response);
 
         if (response) {
-          const req = axios.post(`${response?.data?.upload_url}`, videoBuffer, {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-              "Content-Type": "video/mp4",
-              "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
-            },
-          });
-          console.log(req);
+          try {
+            const req = axios.post(
+              `${response?.data?.upload_url}`,
+              videoBuffer,
+              {
+                headers: {
+                  Authorization: `Bearer ${access_token}`,
+                  "Content-Type": "video/mp4",
+                  "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
+                },
+              }
+            );
+            console.log(req);
+          } catch (error) {
+            res.status(422).send(error, "video upload");
+          }
         }
       } catch (error) {
         console.log(error?.data?.error, "error 422");
