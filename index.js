@@ -141,6 +141,8 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
           } else {
             res.status(422).send("Video buffer not present");
           }
+        } else {
+          res.status(422).send("No response");
         }
       } catch (error) {
         console.log(error?.data?.error, "error 422");
