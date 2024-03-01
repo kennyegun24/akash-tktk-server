@@ -97,7 +97,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
   // console.log(access_token, "access_token");
   // console.log(fileSize, "filesize");
   // res.status(422).send("Something went wrong");
-  async () => {
+  const request = async () => {
     try {
       const req = await axios.post(
         "https://open.tiktokapis.com/v2/post/publish/video/init/",
@@ -146,6 +146,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
       res.status(422).send(error);
     }
   };
+  request();
 });
 
 app.listen(port, () => {});
