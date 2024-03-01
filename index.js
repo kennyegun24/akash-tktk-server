@@ -91,8 +91,8 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
   const userVideoDetails = req.body.userVideoDetails;
   const access_token = req.body.access_token;
   const fileSize = req.body.fileSize;
-  const videoBuffer = req.file.buffer;
-  console.log(req.body);
+  const videoBuffer = req.file ? req.file.buffer : null;
+  console.log(req.file);
   try {
     const initializeUploadToTiktokApi = async () => {
       try {
@@ -118,21 +118,25 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
         console.log(response);
 
         if (response) {
-          try {
-            const req = axios.post(
-              `${response?.data?.upload_url}`,
-              videoBuffer,
-              {
-                headers: {
-                  Authorization: `Bearer ${access_token}`,
-                  "Content-Type": "video/mp4",
-                  "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
-                },
-              }
-            );
-            console.log(req);
-          } catch (error) {
-            res.status(422).send(error, "video upload");
+          if (videoBuffer) {
+            try {
+              const req = axios.post(
+                `${response?.data?.upload_url}`,
+                videoBuffer,
+                {
+                  headers: {
+                    Authorization: `Bearer ${access_token}`,
+                    "Content-Type": "video/mp4",
+                    "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
+                  },
+                }
+              );
+              console.log(req);
+            } catch (error) {
+              res.status(422).send(error, "video upload");
+            }
+          } else {
+            res.status(422).send("Video buffer not present");
           }
         }
       } catch (error) {
