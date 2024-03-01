@@ -93,6 +93,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
   const fileSize = req.body.fileSize;
   const videoBuffer = req.file ? req.file.buffer : null;
   console.log(req.file);
+  console.log(req.body);
   try {
     const initializeUploadToTiktokApi = async () => {
       try {
