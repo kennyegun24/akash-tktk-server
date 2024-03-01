@@ -6,10 +6,11 @@ import axios from "axios";
 const app = express();
 const port = 4000;
 import dotenv from "dotenv";
+import multer from "multer";
 // const bodyParser = require("body-parser");
 import bodyParser from "body-parser";
 dotenv.config();
-
+const upload = multer();
 const tiktokConfig = {
   clientKey: process.env.CLIENT_KEY,
   clientSecret: process.env.CLIENT_SECRET,
@@ -86,11 +87,11 @@ app.post("/oauth/redirect", async (req, res) => {
   }
 });
 
-app.post("/upload/video", async (req, res) => {
-  const bufferData = req.body.bufferData;
+app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
   const userVideoDetails = req.body.userVideoDetails;
   const access_token = req.body.access_token;
   const fileSize = req.body.fileSize;
+  const videoBuffer = req.file.buffer;
   console.log(req.body);
   try {
     const initializeUploadToTiktokApi = async () => {
@@ -117,7 +118,7 @@ app.post("/upload/video", async (req, res) => {
         console.log(response);
 
         if (response) {
-          const req = axios.post(`${response?.data?.upload_url}`, bufferData, {
+          const req = axios.post(`${response?.data?.upload_url}`, videoBuffer, {
             headers: {
               Authorization: `Bearer ${access_token}`,
               "Content-Type": "video/mp4",
