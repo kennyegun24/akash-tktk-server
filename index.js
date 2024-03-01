@@ -123,6 +123,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
         if (response) {
           if (videoBuffer) {
             console.log(response.data.upload_url);
+            res.status(200).send("data");
             // try {
             //   axios.post(`${response?.data?.upload_url}`, videoBuffer, {
             //     headers: {
