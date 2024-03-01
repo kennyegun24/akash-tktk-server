@@ -101,8 +101,8 @@ app.post("/upload/video", async (req, res) => {
             post_info: { ...userVideoDetails },
             source_info: {
               source: "FILE_UPLOAD",
-              video_size: fileSize,
-              chunk_size: fileSize,
+              video_size: fileSize.size,
+              chunk_size: fileSize.size,
               total_chunk_count: 1,
             },
           },
