@@ -97,7 +97,15 @@ app.post("/upload/video", async (req, res) => {
       try {
         const req = await axios.post(
           "https://open.tiktokapis.com/v2/post/publish/video/init/",
-          { ...userVideoDetails },
+          {
+            post_info: { ...userVideoDetails },
+            source_info: {
+              source: "FILE_UPLOAD",
+              video_size: fileSize,
+              chunk_size: fileSize,
+              total_chunk_count: 1,
+            },
+          },
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
