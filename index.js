@@ -125,7 +125,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
         console.log(response.data.upload_url);
         res.status(200).send("data");
         try {
-          axios.post(`${response?.data?.upload_url}`, videoBuffer, {
+          axios.put(`${response?.data?.upload_url}`, videoBuffer, {
             headers: {
               // Authorization: `Bearer ${access_token}`,
               "Content-Type": "video/mp4",
