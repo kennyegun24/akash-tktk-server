@@ -94,19 +94,18 @@ app.post("/upload/video", async (req, res) => {
   console.log(req.body);
   try {
     const initializeUploadToTiktokApi = async () => {
-      const axiosCreate = axios.create({
-        baseURL: "https://open.tiktokapis.com/v2",
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
       try {
-        const req = await axiosCreate.post("/post/publish/video/init/", {
-          ...userVideoDetails,
-        });
-
+        const req = await axios.post(
+          "https://open.tiktokapis.com/v2/post/publish/video/init/",
+          { ...userVideoDetails },
+          {
+            baseURL: "",
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const response = await req.data;
         console.log(response);
 
@@ -126,11 +125,13 @@ app.post("/upload/video", async (req, res) => {
         }
       } catch (error) {
         console.log(error);
+        res.status(422).send("Something went wrong");
       }
     };
     await initializeUploadToTiktokApi();
   } catch (error) {
     console.log(error);
+    res.status(422).send("Something went wrong");
   }
 });
 
