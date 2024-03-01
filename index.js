@@ -88,12 +88,14 @@ app.post("/oauth/redirect", async (req, res) => {
 });
 
 app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
-  const userVideoDetails = req.body.userVideoDetails;
+  const userVideoDetails = JSON.parse(req.body.userVideoDetails);
   const access_token = req.body.access_token;
-  const fileSize = req.body.fileSize;
+  const fileSize = JSON.parse(req.body.fileSize);
   const videoBuffer = req.file ? req.file.buffer : null;
   console.log(req.file?.buffer);
-  console.log(userVideoDetails.title, "body");
+  console.log(userVideoDetails.title, "uservideodetails");
+  console.log(access_token, "access_token");
+  console.log(fileSize, "filesize");
   try {
     const initializeUploadToTiktokApi = async () => {
       try {
