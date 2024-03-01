@@ -121,26 +121,24 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
       console.log(await response.data);
       res.status(200).send("data");
 
-      // if (response && videoBuffer) {
-      //   console.log(response.data.upload_url);
-      //   res.status(200).send("data");
-      //   // try {
-      //   //   axios.post(`${response?.data?.upload_url}`, videoBuffer, {
-      //   //     headers: {
-      //   //       Authorization: `Bearer ${access_token}`,
-      //   //       "Content-Type": "video/mp4",
-      //   //       "Content-Range": `bytes 0-${fileSize.size - 1}/${
-      //   //         fileSize.size
-      //   //       }`,
-      //   //     },
-      //   //   });
-      //   //   // console.log(req);
-      //   // } catch (error) {
-      //   //   res.status(422).send(error, "video upload");
-      //   // }
-      // } else {
-      //   res.status(422).send("Video buffer not present");
-      // }
+      if (response && videoBuffer) {
+        console.log(response.data.upload_url);
+        res.status(200).send("data");
+        try {
+          axios.post(`${response?.data?.upload_url}`, videoBuffer, {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+              "Content-Type": "video/mp4",
+              "Content-Range": `bytes 0-${fileSize.size - 1}/${fileSize.size}`,
+            },
+          });
+          // console.log(req);
+        } catch (error) {
+          res.status(422).send(error, "video upload");
+        }
+      } else {
+        res.status(422).send("Video buffer not present");
+      }
     } catch (error) {
       console.log(error?.data?.error, "error 422");
       res.status(422).send(error);
