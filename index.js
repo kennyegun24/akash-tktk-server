@@ -124,7 +124,7 @@ app.post("/upload/video", async (req, res) => {
         }
       } catch (error) {
         console.log(error?.data?.error, "error 422");
-        res.status(422).send("Something went wrong");
+        res.status(422).send(error);
       }
     };
     await initializeUploadToTiktokApi();
