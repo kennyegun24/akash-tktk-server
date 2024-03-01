@@ -97,7 +97,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
   // console.log(access_token, "access_token");
   // console.log(fileSize, "filesize");
   try {
-    const initializeUploadToTiktokApi = async () => {
+    async () => {
       try {
         const req = await axios.post(
           "https://open.tiktokapis.com/v2/post/publish/video/init/",
@@ -122,20 +122,21 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
 
         if (response) {
           if (videoBuffer) {
-            try {
-              axios.post(`${response?.data?.upload_url}`, videoBuffer, {
-                headers: {
-                  Authorization: `Bearer ${access_token}`,
-                  "Content-Type": "video/mp4",
-                  "Content-Range": `bytes 0-${fileSize.size - 1}/${
-                    fileSize.size
-                  }`,
-                },
-              });
-              // console.log(req);
-            } catch (error) {
-              res.status(422).send(error, "video upload");
-            }
+            console.log(response.data.upload_url);
+            // try {
+            //   axios.post(`${response?.data?.upload_url}`, videoBuffer, {
+            //     headers: {
+            //       Authorization: `Bearer ${access_token}`,
+            //       "Content-Type": "video/mp4",
+            //       "Content-Range": `bytes 0-${fileSize.size - 1}/${
+            //         fileSize.size
+            //       }`,
+            //     },
+            //   });
+            //   // console.log(req);
+            // } catch (error) {
+            //   res.status(422).send(error, "video upload");
+            // }
           } else {
             res.status(422).send("Video buffer not present");
           }
@@ -145,7 +146,6 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
         res.status(422).send(error);
       }
     };
-    await initializeUploadToTiktokApi();
   } catch (error) {
     console.log(error);
     res.status(422).send("Something went wrong");
