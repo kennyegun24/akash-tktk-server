@@ -129,6 +129,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
             },
           });
           // console.log(req);
+          res.status(200).send("Upload successful");
         } catch (error) {
           res.status(422).send(error, "video upload");
         }
