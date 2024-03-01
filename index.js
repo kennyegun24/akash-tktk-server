@@ -118,7 +118,7 @@ app.post("/initiate/video/upload", upload.single("video"), async (req, res) => {
         }
       );
       const response = await req.data;
-      console.log(response.data);
+      console.log(await response.data);
       res.status(200).send("data");
 
       // if (response && videoBuffer) {
