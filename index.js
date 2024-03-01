@@ -117,16 +117,12 @@ app.post("/upload/video", async (req, res) => {
         console.log(response);
 
         if (response) {
-          const axiosCreate = axios.create({
-            baseURL: response?.data?.upload_url,
+          const req = axios.post(`${response?.data?.upload_url}`, bufferData, {
             headers: {
               Authorization: `Bearer ${access_token}`,
               "Content-Type": "video/mp4",
               "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
             },
-          });
-          const req = await axiosCreate.post("", {
-            bufferData,
           });
           console.log(req);
         }
